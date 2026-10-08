@@ -12,7 +12,7 @@ export function TopBar() {
   if (pathname !== '/' && !pathname.startsWith('/game/')) return null;
 
   return (
-    <div className="absolute top-0 left-0 right-0 z-40 pt-[env(safe-area-inset-top)] flex justify-between items-center px-4 py-3 bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
+    <div className="absolute top-0 left-0 right-0 z-40 pt-[max(env(safe-area-inset-top),24px)] flex justify-between items-center px-6 pb-3 bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
        <Link href="/" className="pointer-events-auto">
          <h1 className="font-space font-black text-xl tracking-tighter text-white drop-shadow-md">
            {BRAND_NAME}

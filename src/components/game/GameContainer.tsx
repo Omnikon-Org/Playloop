@@ -102,7 +102,7 @@ export function GameContainer({ game, isActive, isPreload, onGameOver, onScoreUp
       
       {/* Live HUD */}
       {isActive && isReady && !gameOverResult && interactionMode === 'playing' && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-black/60 backdrop-blur-md px-5 py-1.5 rounded-full border border-white/10 text-white font-bold text-2xl tabular-nums font-space tracking-tight">
+        <div className="absolute top-[max(env(safe-area-inset-top)+24px,80px)] left-1/2 -translate-x-1/2 z-20 bg-black/60 backdrop-blur-md px-5 py-1.5 rounded-full border border-white/10 text-white font-bold text-2xl tabular-nums font-space tracking-tight">
           {liveScore.toLocaleString()}
         </div>
       )}
