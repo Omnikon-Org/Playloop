@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { GameMeta } from '../../types/game';
-import { getFeedPage } from '../../lib/repositories/gameRepository';
+import { getFeedPage, getGameById } from '../../lib/repositories/gameRepository';
 import { FeedItem } from './FeedItem';
 import { useFeedStore } from '../../store/feedStore';
 
-export function GameFeed() {
+export function GameFeed({ initialGameId }: { initialGameId?: string }) {
   const [items, setItems] = useState<GameMeta[]>([]);
   const [cursor, setCursor] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -22,11 +22,20 @@ export function GameFeed() {
     if (fetchLock.current) return;
     fetchLock.current = true;
     try {
+      let firstGame: GameMeta | null = null;
+      if (items.length === 0 && initialGameId) {
+        firstGame = await getGameById(initialGameId);
+      }
+      
       const res = await getFeedPage(cursor, 5);
       setItems(prev => {
-        // filter out dupes if any (though mock loops them, we should ensure unique keys if possible, 
-        // but for now let's just append and rely on index+id for key)
-        return [...prev, ...res.items];
+        let newItems = [...prev];
+        if (firstGame && prev.length === 0) {
+          newItems.push(firstGame);
+          // Filter out the initial game from the rest of the feed to avoid immediate duplicate
+          res.items = res.items.filter(g => g.id !== initialGameId);
+        }
+        return [...newItems, ...res.items];
       });
       setCursor(res.nextCursor || 0);
     } finally {
@@ -59,7 +68,7 @@ export function GameFeed() {
   return (
     <div 
       ref={containerRef}
-      className="h-[100dvh] w-full overflow-y-auto snap-y snap-mandatory bg-background text-foreground scroll-smooth"
+      className="h-[100dvh] w-full overflow-y-auto snap-y snap-mandatory bg-background text-foreground scroll-smooth no-scrollbar"
       style={{ overscrollBehavior: 'contain' }}
     >
       {items.map((game, idx) => {

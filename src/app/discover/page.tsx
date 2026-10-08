@@ -5,6 +5,7 @@ import { Search } from 'lucide-react';
 import { GameMeta } from '../../types/game';
 import { getFeedPage, searchGames, getGamesByCategory } from '../../lib/repositories/gameRepository';
 import Link from 'next/link';
+import { formatNumber } from '../../lib/utils';
 
 const CATEGORIES = ["🔥 Trending", "⚡ Quick Games", "🧠 Brain", "🎯 Skill", "🏎️ Racing", "😂 Casual", "👥 Multiplayer"];
 
@@ -86,8 +87,8 @@ export default function DiscoverPage() {
            </div>
          ) : (
            <div className="grid grid-cols-2 gap-3 p-4">
-             {games.map(game => (
-               <Link key={game.id} href={`/game/${game.id}`} className="flex flex-col gap-2 group">
+             {games.map((game, idx) => (
+               <Link key={`${game.id}-${idx}`} href={`/game/${game.id}`} className="flex flex-col gap-2 group">
                  <div 
                    className="w-full aspect-[3/4] rounded-2xl flex items-center justify-center transition-transform group-hover:scale-[1.02] active:scale-95 shadow-lg border border-white/5"
                    style={{ background: `linear-gradient(to bottom right, ${game.thumbnail.gradient[0]}, ${game.thumbnail.gradient[1]})` }}
@@ -97,7 +98,7 @@ export default function DiscoverPage() {
                  <div className="px-1">
                    <h3 className="font-bold text-sm line-clamp-1">{game.title}</h3>
                    <div className="flex items-center justify-between mt-1">
-                     <span className="text-xs text-white/50">{Math.floor(game.plays / 1000)}k plays</span>
+                     <span className="text-xs text-white/50">{formatNumber(game.plays)} plays</span>
                      <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 bg-white/10 rounded-sm text-white/80">{game.difficulty}</span>
                    </div>
                  </div>

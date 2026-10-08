@@ -20,7 +20,7 @@ function GamePageContent({ params }: { params: Promise<{ id: string }> }) {
   // Let's just render the Feed (it will eventually need to start at this item).
   return (
     <main className="w-full h-[100dvh] bg-black text-white relative">
-      <GameFeed />
+      <GameFeed initialGameId={id} />
     </main>
   );
 }

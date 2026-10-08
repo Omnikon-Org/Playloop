@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { GameMeta } from '../../types/game';
 import { Heart, MessageCircle, Share2, Trophy } from 'lucide-react';
 import { useUserStore } from '../../store/userStore';
+import { formatNumber } from '../../lib/utils';
 
 export function ActionRail({ game }: { game: GameMeta }) {
   const toggleLike = useUserStore(s => s.toggleLike);
@@ -29,14 +30,14 @@ export function ActionRail({ game }: { game: GameMeta }) {
          >
            <Heart className={`w-7 h-7 ${isLiked ? 'fill-pink-500' : ''} ${likeAnim ? 'animate-[ping_0.5s_cubic-bezier(0,0,0.2,1)]' : ''}`} />
          </button>
-         <span className="text-white text-xs font-bold font-mono">{game.likes + (isLiked ? 1 : 0)}</span>
+         <span className="text-white text-xs font-bold font-mono">{formatNumber(game.likes + (isLiked ? 1 : 0))}</span>
        </div>
        
        <div className="flex flex-col items-center gap-1 group">
          <button className="p-3 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white transition-transform active:scale-90">
            <MessageCircle className="w-7 h-7" />
          </button>
-         <span className="text-white text-xs font-bold font-mono">{game.commentsCount}</span>
+         <span className="text-white text-xs font-bold font-mono">{formatNumber(game.commentsCount)}</span>
        </div>
 
        <div className="flex flex-col items-center gap-1 group">
